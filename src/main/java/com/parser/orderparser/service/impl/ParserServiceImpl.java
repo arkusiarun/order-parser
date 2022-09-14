@@ -24,31 +24,30 @@ public class ParserServiceImpl implements ParserService {
 
     @Override
     public void parse(String[] fileNames) {
-        try {
-            List<Output> result = new ArrayList<>();
-            for (String fileName : fileNames) {
-                String[] file = fileName.split(AppConstants.SPLIT_DELIMITER);
-                /*
-                Call to Factory and Store Resultant in a List.
-                 */
+        List<Output> result = new ArrayList<>();
+        for (String fileName : fileNames) {
+            String[] file = fileName.split(AppConstants.SPLIT_DELIMITER);
+            /*
+            Call to Factory and Store Resultant in a List.
+            */
+            try {
                 result.addAll(ParserFactory.getParser(ParserType.valueOfLabel(file[1]))
                         .parseAndConvert(fileName, CommonUtils.readSourceFile(fileName)));
+            } catch (Exception e) {
+                System.out.println(e.getMessage() + " : " + fileName);
             }
-
-            /*
-            Sort Resultant List Based on OrderId Field
-            Generate identifier and Print Sequentially
-             */
-            int counter = 0;
-            for (Output output : result.stream()
-                    .sorted(Comparator.comparingLong(Output::getOrderId))
-                    .collect(Collectors.toList())) {
-                counter++;
-                output.setId(counter);
-                System.out.println(output);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        }
+        /*
+        Sort Resultant List Based on OrderId Field
+        Generate identifier and Print Sequentially
+        */
+        int counter = 0;
+        for (Output output : result.stream()
+                .sorted(Comparator.comparingLong(Output::getOrderId))
+                .collect(Collectors.toList())) {
+            counter++;
+            output.setId(counter);
+            System.out.println(output);
         }
     }
 }

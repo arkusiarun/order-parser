@@ -26,9 +26,12 @@ import java.util.stream.Collectors;
 @Service
 public class JsonParser implements Parsers {
 
-    @Autowired
-    @Qualifier("parserExecutor")
     private ThreadPoolExecutor threadPoolExecutor;
+
+    @Autowired
+    public JsonParser(@Qualifier("parserExecutor") ThreadPoolExecutor threadPoolExecutor) {
+        this.threadPoolExecutor = threadPoolExecutor;
+    }
 
     @Override
     public ParserType getParserType() {

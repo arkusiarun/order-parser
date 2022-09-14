@@ -26,7 +26,7 @@ public class ParserFactory {
     private static Map<ParserType, Parsers> elementParsersMap = new EnumMap<>(ParserType.class);
 
     @Autowired
-    private ParserFactory(List<Parsers> parsers) {
+    public ParserFactory(List<Parsers> parsers) {
         populateFactoryMap(parsers.stream().collect(Collectors.toMap(Parsers:: getParserType, Function.identity())));
     }
 
